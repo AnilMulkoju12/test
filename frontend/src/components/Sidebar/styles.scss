@@ -1,0 +1,37 @@
+.sidebar {
+//   margin-top: 10px;
+  display: flex;
+  height: 100vh;
+//   padding: 10px;
+  &__left {
+    display: flex;
+    flex-direction: column;
+    flex: 1.5;
+    border-radius: 10px;
+    margin: 10px 5px 0px 10px;
+    // border: 1px solid;
+    background-color: #fff;
+    a {
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+    //   border-radius: 10px;
+    }
+    a:hover {
+      background-color: aquamarine;
+      color: #000;
+    }
+    .active {
+      background-color: aquamarine;
+      color: #000;
+    }
+  }
+  &__right {
+    border-radius: 10px;
+    margin: 10px 10px 0px 5px;
+    padding: 10px;
+    flex: 5;
+    background-color: #fff;
+    // border: 1px solid;
+  }
+}

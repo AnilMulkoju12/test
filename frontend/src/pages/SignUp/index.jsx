@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './styles.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   validateUsername,
   validateEmail,
   validatePassword,
   validateConfirmPassword
 } from '../../utils/validations';
+import { toast } from 'react-hot-toast';
+import { apiRequest } from '../../helpers/fetchApi';
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -23,19 +25,18 @@ const SignUp = () => {
     confirmPassword: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Update form state
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // Validate field in real-time
     let errorMsg = '';
     if (name === 'username') errorMsg = validateUsername(value);
     if (name === 'email') errorMsg = validateEmail(value);
     if (name === 'password') {
       errorMsg = validatePassword(value);
-      // Also re-validate confirm password if password changes
       const confirmError = validateConfirmPassword(value, form.confirmPassword);
       setErrors((prev) => ({ ...prev, confirmPassword: confirmError }));
     }
@@ -46,10 +47,9 @@ const SignUp = () => {
     setErrors((prev) => ({ ...prev, [name]: errorMsg }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate all fields on submit
     const newErrors = {
       username: validateUsername(form.username),
       email: validateEmail(form.email),
@@ -60,9 +60,30 @@ const SignUp = () => {
     setErrors(newErrors);
 
     const isValid = Object.values(newErrors).every((err) => err === '');
-    if (isValid) {
-      console.log('Sign up form submitted ✅', form);
-      // API call or navigation here
+    if (!isValid) return;
+
+    try {
+      // 🌐 Call backend API
+      const payload = {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      };
+
+      const data = await apiRequest('/auth/signup', 'POST', payload);
+
+      toast.success('Account created successfully! 🎉', {
+        position: 'top-center',
+        style: { background: '#ADD8E6' },
+      });
+
+      navigate('/'); // Redirect to login after signup
+    } catch (error) {
+      console.error('Signup Error:', error);
+      toast.error(error.message || 'Signup failed. Please try again.', {
+        position: 'top-center',
+        style: { background: '#F08080' },
+      });
     }
   };
 
@@ -72,7 +93,7 @@ const SignUp = () => {
         <input
           type="text"
           name="username"
-          placeholder="username"
+          placeholder="Username"
           value={form.username}
           onChange={handleChange}
         />
@@ -81,7 +102,7 @@ const SignUp = () => {
         <input
           type="email"
           name="email"
-          placeholder="email"
+          placeholder="Email"
           value={form.email}
           onChange={handleChange}
         />
@@ -90,7 +111,7 @@ const SignUp = () => {
         <input
           type="password"
           name="password"
-          placeholder="password"
+          placeholder="Password"
           value={form.password}
           onChange={handleChange}
         />
@@ -99,15 +120,16 @@ const SignUp = () => {
         <input
           type="password"
           name="confirmPassword"
-          placeholder="confirm password"
+          placeholder="Confirm Password"
           value={form.confirmPassword}
           onChange={handleChange}
         />
         {errors.confirmPassword && <p className="sign-up__error">{errors.confirmPassword}</p>}
 
         <button type="submit">Sign Up</button>
+
         <div className='sign-up__links'>
-          <Link to="/">back to login</Link>
+          <Link to="/">Back to Login</Link>
         </div>
       </form>
     </div>
