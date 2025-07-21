@@ -4,15 +4,22 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'yoursecretkey';
 
-// Signup
+// 🔥 Signup
 export const signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    // Check if user already exists (by email or username)
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email },
+          { username },
+        ],
+      },
+    });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email.' });
+      return res.status(400).json({ message: 'User already exists with this email or username.' });
     }
 
     // Hash password
@@ -34,13 +41,21 @@ export const signup = async (req, res) => {
   }
 };
 
-// Login
+// 🔥 Login (supports email or username)
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
   try {
-    // Find user
-    const user = await prisma.user.findUnique({ where: { email } });
+    // Find user by email or username
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: identifier },
+          { username: identifier },
+        ],
+      },
+    });
+
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials.' });
     }
