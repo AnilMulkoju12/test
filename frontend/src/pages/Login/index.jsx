@@ -24,44 +24,44 @@ const Login = () => {
     setErrors((prev) => ({ ...prev, [name]: errorMsg }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    const newErrors = {
-      identifier: form.identifier.trim() === "" ? "Username or Email is required" : "",
-      password: validatePassword(form.password),
-    };
+  //   const newErrors = {
+  //     identifier: form.identifier.trim() === "" ? "Username or Email is required" : "",
+  //     password: validatePassword(form.password),
+  //   };
 
-    setErrors(newErrors);
+  //   setErrors(newErrors);
 
-    const isValid = Object.values(newErrors).every((err) => err === "");
-    if (!isValid) return;
+  //   const isValid = Object.values(newErrors).every((err) => err === "");
+  //   if (!isValid) return;
 
-    try {
-      const data = await apiRequest("/auth/login", "POST", form);
+  //   try {
+  //     const data = await apiRequest("/auth/login", "POST", form);
 
-      toast.success("Successfully logged in!", {
-        position: "top-center",
-        style: { background: "#ADD8E6" },
-      });
+  //     toast.success("Successfully logged in!", {
+  //       position: "top-center",
+  //       style: { background: "#ADD8E6" },
+  //     });
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
+  //     if (data.token) {
+  //       localStorage.setItem("token", data.token);
+  //     }
 
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(error.message || "Login failed", {
-        position: "top-center",
-        style: { background: "#F08080" },
-      });
-    }
-  };
+  //     navigate("/dashboard");
+  //   } catch (error) {
+  //     toast.error(error.message || "Login failed", {
+  //       position: "top-center",
+  //       style: { background: "#F08080" },
+  //     });
+  //   }
+  // };
   
   
-  // const handleSubmit = ()=>{
-  //   navigate("/dashboard");
-  // }
+  const handleSubmit = ()=>{
+    navigate("/dashboard");
+  }
 
   return (
     <div className="login">
