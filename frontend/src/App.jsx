@@ -21,13 +21,13 @@ const App = () => {
           <Route path="/" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
           {/* <Route path="/" element={<Layout />}> */}
-            {/* <Route element={<PrivateRoute />}> */}
+            <Route element={<PrivateRoute />}>
               <Route path="/" element={<SideBar />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/client" element={<Client />} />
                 <Route path="/admin" element={<Admin />} />
               </Route>
-            {/* </Route> */}
+            </Route>
           {/* </Route> */}
         </Routes>
       </BrowserRouter>

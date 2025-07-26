@@ -16,16 +16,16 @@ const SideBar = () => {
             Dashboard
           </NavLink>
           <NavLink
-            to="/admin"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Admin Management
-          </NavLink>
-          <NavLink
             to="/client"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Client Management
+          </NavLink>
+          <NavLink
+            to="/admin"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Admin Management
           </NavLink>
         </div>
         <div className="sidebar__right">
