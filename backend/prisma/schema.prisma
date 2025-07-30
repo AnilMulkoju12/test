@@ -22,3 +22,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+model Client {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  startDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

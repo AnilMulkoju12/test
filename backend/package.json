@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "npm install && cd ../frontend && npm install && npm run build",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
