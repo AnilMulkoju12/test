@@ -1,88 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {MaterialReactTable} from 'material-react-table';
 import { Box, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { Edit, Visibility } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import './styles.scss';
-import dayjs from 'dayjs'; // ✅ required if you're using @mui/x-date-pickers
+import dayjs from 'dayjs'; 
+import { apiRequest } from '../../helpers/fetchApi';
 
 const ClientManagement = () => {
-  const [rowData, setRowData] = useState([
-    {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john@example.com',
-      startDate: '2024-07-01T00:00:00Z',
-    },
-    {
-      id: 2,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 3,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 4,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 5,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 6,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 7,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 8,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 9,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 10,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 11,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-    {
-      id: 12,
-      fullName: 'Jane Smith',
-      email: 'jane@example.com',
-      startDate: null, // test case
-    },
-  ]);
-
+  const [rowData, setRowData] = useState([])
+  console.log("rowData",rowData)
   const columns = useMemo(
     () => [
       {
@@ -111,7 +39,18 @@ const ClientManagement = () => {
     ],
     []
   );
-
+  useEffect(()=>{
+    const fetchApi = async()=>{
+      try{
+        const res = await apiRequest("/clients", "GET");
+        const data = res?.data;
+        setRowData(data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchApi()
+  },[])
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="client-management">

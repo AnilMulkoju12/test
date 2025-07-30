@@ -1,6 +1,7 @@
-const API_BASE_URL = import.meta.MODE === "development" ? import.meta.env.VITE_API_BASE_URL : `${window.location.origin}/api`;
+const API_BASE_URL = import.meta.env.MODE === "development" ? import.meta.env.VITE_API_BASE_URL : `${window.location.origin}/api`;
 
 console.log("API_BASE_URL",API_BASE_URL);
+console.log("ENV:", import.meta.env);
 
 
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
